@@ -205,3 +205,7 @@ Decompiled with `ilspycmd` 8.2.0.7535 (`dotnet tool install ilspycmd --version 8
 - `Kingmaker.UI.MVVM._VM.CharGen.Phases.Appearance/CharGenAppearancePhaseVM.cs` (`GetHeadsList`)
 - `Kingmaker.UnitLogic.Class.LevelUp/DollState.cs` (head, eyebrows, hair selection)
 - `Kingmaker.Blueprints.Classes/BlueprintRace.cs`
+
+## 7. See also
+
+- [[Rogue Trader Head to WotR - Porting Guide]]: a real head mesh (ported from Rogue Trader), runtime mesh building on the donor renderer, texture formats, and the neck problems.
