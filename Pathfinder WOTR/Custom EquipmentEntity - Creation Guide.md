@@ -661,6 +661,15 @@ To learn a donor's part types and texture names, launch once with an empty `Cust
 | `_M` masks | linear | material channels: R and B are used, G and A are 0 in the measured donor maps. Start from the donor's map |
 | `_S` color mask | linear | `RampShadowTexture`, selects what the color ramps repaint |
 
+### Diffuse alpha = cut-out (hair cards, lace, fur)
+
+Measured 2026-11-25 (see [[Custom Head from Blender Scene - Squall Human Male Guide]] section 8):
+- **The whole character is one mesh with ONE material.** `Character.UpdateCharacter` creates the atlas material as `new Material(first overlay part's Material)`; the `Material` of other parts is ignored, so giving one part a special material does nothing.
+- Vanilla body, head and hair all use **`Character_Diffuse_Cutout`**: keywords `_ALPHATEST_ON`, `CUTOUT_ON`, `_DOUBLESIDED_ON`; `_Cutoff 0.3`, `_CullMode 0` (double-sided), queue 2450, `RenderType TransparentCutout`. Identical to Rogue Trader's material of the same name.
+- The atlas keeps diffuse alpha (`CharacterAtlas`: cleared to alpha 0, each part blended in, compressed DXT5). So **diffuse alpha < 0.3 is cut out**, and back faces are drawn: hair cards need no special setup beyond the alpha.
+- Consequences: an opaque part (face, skin) must have alpha 255 everywhere it is mapped; a cut-out part needs its real alpha in `_D`. Check the PNG before building (alpha histogram): image tools and scripts that convert to RGB silently make it opaque (that was the Squall bug).
+- Import cut-out diffuses with `alphaIsTransparency = true` (as the RT Psylocke hair does): colour is dilated into the cut texels, so edges have no dark fringe after filtering/compression.
+
 - A part can stack several textures: fullplate torso = chainmail underneath + plate on top. Retexture each by name.
 - A part **without a mesh** is a pure texture overlay (fullplate `HeadBottom`).
 - Textures are placed by the part type they are first seen with, so never share one texture between types that have different rects.

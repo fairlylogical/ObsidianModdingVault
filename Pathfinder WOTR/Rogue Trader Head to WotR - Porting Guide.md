@@ -26,7 +26,7 @@ How to port a custom **Rogue Trader head** (a mod that adds a face option in cha
 | What | Where |
 |---|---|
 | RT source mod | `C:\Users\fairl\source\repos\RTModifications\MorganFayMod` |
-| WotR project (template copy) | `D:\Pathfingder_Mods\MorganFayWotr` |
+| WotR project (template copy) | `D:\Pathfingder_Mods\projects\MorganFayWotr` |
 | Mod (name `MorganFay`) | `Assets/Modifications/MorganFay/` (`MorganFay.asset`, `Scripts/MorganFay.cs`, `Scripts/Ids.cs`, `Content/`) |
 | Converter | `Tools/convert_head.py` (glb + tga to `.bytes` + tga; plain Python) |
 | Body neck reference | `Tools/extract_body_neck.py` produces `Tools/body_neck_ref.json` (needs UnityPy) |
@@ -105,13 +105,15 @@ Measured with UnityPy on `ee_head01_f_hm` (vanilla) and the RT tga files (all 68
 
 RT imported everything as Default + sRGB (RT's shader or colour space differs). Do not copy those import settings.
 
-`BuildMod.Import` rules in this project: `_N`, `_M`, `_S` are linear, all Default type, DXT5, no mips, max 2048, alpha from input.
+`BuildMod.Import` rules in this project: `_N`, `_M`, `_S` are linear, all Default type, DXT5, no mips, max 2048, alpha from input. Later projects (SquallHumanWotr) also set `alphaIsTransparency` on diffuses, like the RT `PsylockeMod` hair.
+
+Material note: RT `Character_Diffuse_Cutout.mat` (e.g. `PsylockeMod/Content`) has the same settings as WotR's vanilla character material (alpha test, `_Cutoff 0.3`, double-sided). WotR renders the whole character with one atlas material anyway, so an RT hair material does not need porting: the cut-out works if the diffuse alpha survives conversion. See [[Custom EquipmentEntity - Creation Guide]] section 8.
 
 ## 5. Procedure (repeat for another RT head)
 
 ```bash
 source ~/wotr_env.sh || exit 1
-P=/d/Pathfingder_Mods/MorganFayWotr      # or a fresh template copy (delete UlrikaMod)
+P=/d/Pathfingder_Mods/projects/MorganFayWotr      # or a fresh template copy (delete UlrikaMod)
 M=$P/Assets/Modifications/MorganFay
 # 0. once: body neck reference (UnityPy in a venv)
 python -I $P/Tools/extract_body_neck.py "$WOTR_GAME/Bundles" $P/Tools/body_neck_ref.json

@@ -19,7 +19,7 @@ How to add an extra **head option in character creation** to any race. Companion
 
 ## 1. Structure (same idea as Rogue Trader)
 
-- Races are `BlueprintRace` blueprints, in `blueprints.zip` under `Races/`. Human = `Races/HumanRace.jbp`, AssetId `d1d114f539b74468b157ac69c275f266`.
+- Races are `BlueprintRace` blueprints, in `blueprints.zip` under `Races/`. Human = `Races/HumanRace.jbp`, AssetId `0a5d473ead98b0646b94495af250fdc4` (read from `blueprints.zip` on 2026-11-25; an earlier version of this note had `d1d114f539b74468b157ac69c275f266`, which is wrong).
 - Each has `MaleOptions` and `FemaleOptions`, of type `Kingmaker.Blueprints.CharGen.CustomizationOptions`.
 - Its fields `m_Heads`, `m_Eyebrows`, `m_Hair`, ... are arrays of `EquipmentEntityLink` (`{ "AssetId": "<EE guid>" }`). **A head is a plain EE, not a KEE.**
 - `m_Eyebrows` is a tooltip "Must match heads 1:1": `DollState` picks `Eyebrows[indexOfHead]` and leaves eyebrows empty if the index is out of range. A head added at the end therefore has **no eyebrows** unless you also extend the eyebrows list.
